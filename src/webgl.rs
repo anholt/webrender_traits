@@ -458,6 +458,15 @@ impl WebGLCommand {
             gl::VENDOR => Ok(WebGLParameter::String("Mozilla/Servo".to_owned())),
             gl::SHADING_LANGUAGE_VERSION => Ok(WebGLParameter::String("WebGL GLSL ES 1.0".to_owned())),
 
+            // WebGLFrameBuffer
+            gl::FRAMEBUFFER_BINDING => {
+                let id = match gl::get_integer_v(param_id) {
+                    0 => None,
+                    val => unsafe { Some(WebGLFramebufferId::new(val as u32)) },
+                };
+                Ok(WebGLParameter::FramebufferId(id))
+            }
+
             // TODO(zbarsky, emilio): Implement support for the following valid parameters
             // Float32Array
             gl::ALIASED_LINE_WIDTH_RANGE |
@@ -469,9 +478,6 @@ impl WebGLCommand {
             // WebGLBuffer
             gl::ARRAY_BUFFER_BINDING |
             gl::ELEMENT_ARRAY_BUFFER_BINDING |
-
-            // WebGLFrameBuffer
-            gl::FRAMEBUFFER_BINDING |
 
             // WebGLRenderBuffer
             gl::RENDERBUFFER_BINDING |

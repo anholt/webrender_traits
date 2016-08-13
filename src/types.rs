@@ -657,6 +657,7 @@ pub enum WebGLParameter {
     String(String),
     Float(f32),
     FloatArray(Vec<f32>),
+    FramebufferId(Option<WebGLFramebufferId>),
     Invalid,
 }
 
